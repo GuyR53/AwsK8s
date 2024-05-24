@@ -12,5 +12,22 @@ module "vpc" {
 # Create eks module
 module "eks" {
   source               = "./modules/eks"
+  env                  = var.env
   private_subnet_ids   = module.vpc.private_subnet_ids 
+  security_group_ids   = module.vpc.security_group_ids
+  eks_name             = var.eks_name
+  node_groups          = var.node_groups
+  eks_version          = var.eks_version
+  enable_irsa          = var.enable_irsa
+}
+
+# Create keda module (for keda role)
+module "keda" {
+  source               = "./modules/keda"
+}
+
+# Create sqs module
+module "sqs" {
+  source               = "./modules/sqs"
+  env                  = var.env
 }

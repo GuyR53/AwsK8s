@@ -40,9 +40,42 @@ variable "private_subnets"{
   default     = ["10.60.64.0/18", "10.60.128.0/18", "10.60.192.0/18"]
 }
 
+variable "node_groups" {
+  description = "Map of node groups and their configurations"
+  type = map(object({
+    capacity_type  = string
+    instance_types = list(string)
+    scaling_config = object({
+      desired_size = number
+      max_size     = number
+      min_size     = number
+    })
+  }))
+  default = {
+    testnodegroup = {
+      capacity_type  = "ON_DEMAND"
+      instance_types = ["t3.medium"]
+      scaling_config = {
+        desired_size = 2
+        max_size     = 2
+        min_size     = 2
+      }
+    }
+    
+  }
+}
 
+variable "eks_version" {
+  description = "Desired Kubernetes master version."
+  type        = string
+  default     = "1.30"
+}
 
-
+variable "enable_irsa" {
+  description = "Determines whether to create an OpenID Connect Provider for EKS to enable IRSA"
+  type        = bool
+  default     = true
+}
 
 
 

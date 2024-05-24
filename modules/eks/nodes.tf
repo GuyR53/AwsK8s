@@ -5,7 +5,7 @@ resource "aws_eks_node_group" "this" {
     node_group_name = each.key
     node_role_arn   = aws_iam_role.nodes.arn
 
-    subnet_ids = var.subnet_ids
+    subnet_ids = var.private_subnet_ids
 
     capacity_type  = each.value.capacity_type
     instance_types = each.value.instance_types
@@ -23,24 +23,7 @@ resource "aws_eks_node_group" "this" {
     labels = {
       role = each.key
     }
-    dynamic "taint" {
-    for_each = each.key == "data_pool" ? [1] : []
-    content {
-      key    = "Node_Pool"
-      value  = each.key
-      effect = "NO_SCHEDULE"
-    }
-  }
-
-  #   dynamic "remote_access" {
-  #   for_each = var.security_group_id != "" ? [1] : []
-  #   content {
-  #     ec2_ssh_key = var.ec2_ssh_key
-  #     source_security_group_ids = [var.nodegroup_securitygroup]
-  #   }
-  # }
-
-  depends_on = [aws_iam_role_policy_attachment.nodes]
+    depends_on = [aws_iam_role.nodes]
   }
 
 

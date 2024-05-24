@@ -6,10 +6,6 @@ resource "aws_route_table" "private" {
     nat_gateway_id = aws_nat_gateway.this.id
   }
 
-  # route {
-  #   cidr_block     = var.peer_cidr_block
-  #   vpc_peering_connection_id = aws_vpc_peering_connection.this.id
-  # }
 
   tags = {
     Name = "${var.env}-${var.vpc_name}"
@@ -24,10 +20,6 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.this.id
   }
 
-  # route {
-  #   cidr_block = var.peer_cidr_block
-  #   vpc_peering_connection_id = aws_vpc_peering_connection.this.id
-  # }
 
   tags = {
     Name = "${var.env}-${var.vpc_name}"

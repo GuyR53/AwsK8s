@@ -20,14 +20,11 @@ resource "aws_iam_role_policy_attachment" "nodes" {
   role       = aws_iam_role.nodes.name
 }
 
-
 resource "aws_iam_policy" "policy" {
   name        = "${var.env}-${var.eks_name}-Policies"
   path        = "/"
   description = "ClusterPolicies"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -50,10 +47,11 @@ resource "aws_iam_policy" "policy" {
           "ec2:DetachVolume",
           "ec2:AttachVolume",
           "elasticfilesystem:*",
-          "kms:*",
           "ec2:RevokeSecurityGroupIngress",
           "ec2:DeleteSecurityGroup",
-          "s3:*",
+          "sqs:ReceiveMessage",
+          "sqs:GetQueueAttributes",
+          "sqs:GetQueueUrl"
 
         ]
         Effect   = "Allow"
@@ -62,6 +60,7 @@ resource "aws_iam_policy" "policy" {
     ]
   })
 }
+
 
 
 resource "aws_iam_role_policy_attachment" "ekspolices" {

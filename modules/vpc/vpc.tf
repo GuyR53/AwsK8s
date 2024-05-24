@@ -18,7 +18,7 @@ resource "aws_security_group" "eks" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = []
+    cidr_blocks = ["10.60.0.0/16"]
   }
 
   // You might want to define egress rules as well

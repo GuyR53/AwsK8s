@@ -7,12 +7,11 @@ resource "aws_eks_cluster" "this" {
     endpoint_private_access = true
     endpoint_public_access  = false
 
-    subnet_ids = var.subnet_ids
-    security_group_ids = ["${var.security_group_id}"]
+    subnet_ids = var.private_subnet_ids
+    security_group_ids = var.security_group_ids
   }
 
-  depends_on = [aws_iam_role_policy_attachment.eks, aws_cloudwatch_log_group.this]
-  enabled_cluster_log_types = ["api", "audit"]
+  depends_on = [aws_iam_role_policy_attachment.eks]
 }
 
 resource "aws_iam_role" "eks" {
@@ -39,8 +38,4 @@ resource "aws_iam_role_policy_attachment" "eks" {
   role       = aws_iam_role.eks.name
 }
 
-resource "aws_cloudwatch_log_group" "this" {
-  name              = "/aws/eks/${var.eks_name}/cluster"
-  retention_in_days = 7
-}
 
