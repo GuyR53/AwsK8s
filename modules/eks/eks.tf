@@ -10,6 +10,9 @@ resource "aws_eks_cluster" "this" {
     subnet_ids = var.private_subnet_ids
     security_group_ids = var.security_group_ids
   }
+  tags = {
+    Name        = "${var.env}-${var.eks_name}"
+  }
 
   depends_on = [aws_iam_role_policy_attachment.eks]
 }

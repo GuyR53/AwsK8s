@@ -23,6 +23,10 @@ resource "aws_eks_node_group" "this" {
     labels = {
       role = each.key
     }
+
+     tags = {
+        Name        = "${var.env}-${each.key}-node-group"
+      }
     depends_on = [aws_iam_role.nodes]
   }
 
