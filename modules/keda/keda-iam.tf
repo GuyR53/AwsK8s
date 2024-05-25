@@ -7,11 +7,11 @@ resource "aws_iam_role" "keda_role_sqs" {
         "Effect": "Allow",
         "Action": "sts:AssumeRoleWithWebIdentity",
         "Principal": {
-          "Federated": "arn:aws:iam::654856753336:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/89B4CFB8A482F0A224FB10595425EF20"
+          "Federated": var.oidc_provider_arn
         },
         "Condition": {
           "StringEquals": {
-            "oidc.eks.us-west-2.amazonaws.com/id/89B4CFB8A482F0A224FB10595425EF20:aud": [
+            "${var.oidc_provider_url}:aud": [
               "sts.amazonaws.com"
             ]
           }

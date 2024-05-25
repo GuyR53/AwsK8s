@@ -24,6 +24,9 @@ module "eks" {
 # Create keda module (for keda role)
 module "keda" {
   source               = "./modules/keda"
+  oidc_provider_arn   = module.eks.oidc_provider_arn
+  oidc_provider_url   = module.eks.oidc_provider_url
+
 }
 
 # Create sqs module
